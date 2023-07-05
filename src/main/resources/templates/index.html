@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo Web Site Home Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        #customers {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 85%;
+            margin: 30px auto;
+        }
+
+        #customers td, #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #customers tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #customers tr:hover {
+            background-color: #ddd;
+        }
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        .fromContainer {
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 10px;
+            gap: 20px;
+            width: 30%;
+            margin: 30px auto;
+            box-sizing: 10px rgb(255,255,255);
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            border-radius: 15px;
+        }
+
+        .formControl{
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            width: 80%;
+        }
+        .formLabel{
+            font-size:  large;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: blueviolet;
+        }
+        .formInput{
+            padding: 7px 20px;
+            /* border-radius: 5px; */
+            outline: none;
+            border: none;
+            border-bottom:1px solid blueviolet;
+        }
+        .submit{
+            padding: 7px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: blueviolet;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<form class="fromContainer" action="#" th:action="@{/create-user}" th:object="${userRecord}" method="post">
+    <div class="formControl">
+        <label class="formLabel" for="name">Name</label>
+        <input class="formInput" type="text" th:field="*{name}" id="name" placeholder="Name">
+    </div>
+    <div class="formControl">
+        <label class="formLabel" for="email">Email</label>
+        <input class="formInput"  type="text" th:field="*{email}" id="email" placeholder="Email">
+    </div>
+    <div th:if="${error != null || info != null}">
+        <span th:if="${error != null}" th:text="${error}"></span>
+        <span th:if="${info != null}" th:text="${info}"></span>
+    </div>
+    <input class="submit" type="submit" value="Add User">
+</form>
+
+<table id="customers" th:if="${users != null && users.size() > 0}">
+    <tr>
+        <td>ID</td>
+        <td>Name</td>
+        <td>Email</td>
+        <td>Actions</td>
+    </tr>
+    <tr th:each="user :${users}">
+        <td><span th:text="${user.id}">ID</span></td>
+        <td><span th:text="${user.name}">Name</span></td>
+        <td><span th:text="${user.email}">Email</span></td>
+        <td><a th:href="'/delete/' + ${user.id}">delete</a></td>
+    </tr>
+</table>
+
+</body>
+</html>
